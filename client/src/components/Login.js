@@ -33,7 +33,7 @@ class Login extends React.Component {
   render() {
     return (
       <div>
-        <h1>Bubble Login Page</h1>
+        <h1>Bubble Fans Only!</h1>
         <form onSubmit={this.login}>
           <input
             type="text"
