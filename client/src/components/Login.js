@@ -1,62 +1,66 @@
-import React from 'react';
-import { axiosWithAuth } from '../utils/axiosWithAuth';
+import React, { useState } from "react";
+import axiosWithAuth from "../utils/axiosWithAuth";
 
-class Login extends React.Component {
-  state = {
-    credentials: {
-      username: '',
-      password: ''
-    }
-  };
 
-  handleChange = e => {
-    this.setState({
-      credentials: {
-        ...this.state.credentials,
-        [e.target.name]: e.target.value
-      }
+const Login = (props) => {
+  const [userCreds, setUserCreds] = useState({ username: "", password: "" });
+
+  const handleChange = e => {
+    setUserCreds({
+      ...userCreds,
+      [e.target.name]: e.target.value
     });
   };
 
-  login = e => {
+  const onSubmit = e => {
     e.preventDefault();
     axiosWithAuth()
-      .post('/login', this.state.credentials)
+      .post("/login", userCreds)
       .then(res => {
-        localStorage.setItem('token', res.data.payload);
-    
-        this.props.history.push('/colors');
+        console.log(res)
+        localStorage.setItem("token", res.data.payload);
+        props.history.push("/bubblepage");
       })
-      .catch(err => console.log(err));
+      .catch(err => console.log("Something is broken", err));
   };
 
-  render() {
-    return (
-      <div>
-        <h1>Bubble Fans Only!</h1>
-        <form onSubmit={this.login}>
-          <input
-            type="text"
-            name="username"
-            placeholder='Username'
-            value={this.state.credentials.username}
-            onChange={this.handleChange}
-          />
-          <br></br>
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={this.state.credentials.password}
-            onChange={this.handleChange}
-          />
-          <br></br>
-          <button>Log in</button>
-        </form>
-      </div>
-    );
-  }
+  return (
+    <div style={loginStyle}>
+      <h1>Bubble Fans Only!</h1>
+      <form style={formStyle} onSubmit={onSubmit}>
+        <input
+          type="text"
+          name="username"
+          placeholder="username"
+          value={userCreds.username}
+          onChange={handleChange}
+        />
+        <input
+          type="password"
+          name="password"
+          placeholder="password"
+          value={userCreds.password}
+          onChange={handleChange}
+        />
+        <button style={buttonStyle}>Login</button>
+      </form>
+    </div>
+  );
+};
+
+const loginStyle = {
+  margin: '0 auto',
+  height: '100%',
+  display: 'flex',
+  flexDirection: 'column'
+}
+const buttonStyle = {
+  width: '105px'
 }
 
-export default Login;
+const formStyle = {
+  margin: '0 auto'
+}
 
+
+export default Login;

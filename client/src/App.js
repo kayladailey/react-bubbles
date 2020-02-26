@@ -1,17 +1,21 @@
 import React, { useState } from "react";
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import BubblePage from './components/BubblePage';
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import BubblePage from "./components/BubblePage"
+import PrivateRoute from "./components/PrivateRoute"
+
 import Login from "./components/Login";
-import PrivateRoute from './utils/PrivateRoute';
 import "./styles.scss";
+import Logout from "./components/Logout";
 
 function App() {
-  const [colorList, setColorList] = useState([]);
   return (
     <Router>
       <div className="App">
-        <Route exact path="/" component={Login} />
-        <PrivateRoute exact path="/colors" component={BubblePage} />
+        <Switch>
+          <Route exact path="/" component={Login} />
+          <Route exact path="/logout" component={Logout} />
+          <PrivateRoute path='/bubblepage' component={BubblePage} />
+        </Switch>
       </div>
     </Router>
   );
